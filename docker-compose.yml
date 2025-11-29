@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   autossh-remote-tunnel:
     build:
@@ -33,3 +31,7 @@ services:
       
       # --- 2. 入ってくる接続用 (User -> Container) ---
       - ./ssh_key/authorized_keys:/root/mounted_keys/authorized_keys:ro
+
+      # --- 3. SSHホストキーの永続化 ---
+      - ./ssh_host_keys/ssh_host_ed25519_key:/etc/ssh/ssh_host_ed25519_key:ro
+      - ./ssh_host_keys/ssh_host_ed25519_key.pub:/etc/ssh/ssh_host_ed25519_key.pub:ro
