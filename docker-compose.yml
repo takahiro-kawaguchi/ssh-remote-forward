@@ -1,11 +1,10 @@
 version: '3.8'
 
 services:
-  autossh-jump-host:
+  autossh-remote-tunnel:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: jump-host-container
     restart: unless-stopped
 
     environment:
