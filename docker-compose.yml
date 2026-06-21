@@ -19,7 +19,7 @@ services:
       SSH_KEY_PATH: "/root/.ssh/${IDENTITY_FILE}"
 
       # --- トンネル設定 ---
-      TUNNELS: "${TUNNELS}"
+      REMOTE_PORT: "${REMOTE_PORT}"
 
     volumes:
       # --- 1. 出ていく接続用 (Autossh -> Remote Server) ---
