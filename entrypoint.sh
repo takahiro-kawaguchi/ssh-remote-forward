@@ -38,16 +38,21 @@ AUTOSSH_COMMON_OPTS="\
      -N \
      -o ServerAliveInterval=30 \
      -o ServerAliveCountMax=3 \
-     -o ExitOnForwardFailure=yes \
+     -o ExitOnForwardFailure=no \
      -o StrictHostKeyChecking=yes \
      -o UserKnownHostsFile=/root/.ssh/known_hosts \
      -p ${SSH_PORT} \
      -i ${SSH_KEY_PATH} \
      ${SSH_USER}@${SSH_HOST}"
 
-echo "Starting autossh remote tunnel: ${SSH_HOST}:${REMOTE_PORT} -> localhost:22"
+# TUNNELS変数をパースして -R フラグを生成
+# 形式: リモートポート:転送先ホスト:転送先ポート (カンマ区切りで複数指定可)
+TUNNEL_ARGS=""
+for tunnel in $(echo "${TUNNELS}" | tr ',' ' '); do
+    echo "Adding tunnel: ${SSH_HOST}:${tunnel}"
+    TUNNEL_ARGS="${TUNNEL_ARGS} -R ${tunnel}"
+done
 
-# リモートフォワードオプションのみを実行
 exec autossh \
-     -R "${REMOTE_PORT}:localhost:22" \
+     ${TUNNEL_ARGS} \
      ${AUTOSSH_COMMON_OPTS}
